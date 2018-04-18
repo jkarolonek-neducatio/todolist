@@ -14,13 +14,24 @@ class ListItem {
         itemView.appendChild(remover);
         itemView.appendChild(doneCheck);
         remover.innerHTML = "🗙";
-        remover.addEventListener('click', function(event) {
+        const element = array[array.length - 1];
+
+        const removeElement = function(event) {
             parent.removeChild(itemView);
-            array.splice(array.indexOf(itemView, 1));
+            array.splice(array.indexOf(element), 1);
+            remover.removeEventListener('click', removeElement);
+            doneCheck.removeEventListener('change', checkChange);
             console.log(array);
-        });
-        doneCheck.addEventListener('click', function(event) {
-        });
+        }
+
+        const checkChange = function(event) {
+            array[array.indexOf(element)].isDone = !array[array.indexOf(element)].isDone;
+            console.log(array);
+        }
+
+        remover.addEventListener('click', removeElement);
+
+        doneCheck.addEventListener('change', checkChange);
     }
 }
 

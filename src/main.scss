@@ -1,5 +1,110 @@
-#play-area {
-  width: 200px;
-  height: 200px;
-  border: 1px solid red;
+body, html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+body {
+  background-color: #2C56A8;
+}
+.main-container {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2069F8;
+  padding: 20px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  min-width: 400px;
+  max-width: 500px;
+}
+#item-input {
+  border-radius: 5px;
+  background-color: #2069F8;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 5px;
+  &::-webkit-input-placeholder {
+    color: #fff;
+  }
+  &:focus {
+    background: #387BFF;
+  }
+}
+#add-item {
+  background-color: #2069F8;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  right: 20px;
+}
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+li {
+  position: relative;
+  padding: 5px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  span {
+    flex-basis: 80%;
+  }
+}
+.remover {
+  padding: 0;
+  background-color: #2069F8;
+  color: #fff;
+  border: none;
+  height: 20px;
+  width: 20px;
+  line-height: 10px;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+input[type="checkbox"] {
+  position: relative;
+  width: 32px;
+  height: 11px;
+  visibility: hidden;
+  &:before {
+    content: "";
+    display: block;
+    width: 32px;
+    height:16px;
+    background-color: #fff;
+    visibility: visible;
+    border-radius: 10px;
+    position: absolute;
+    transition:all .3s;
+  }
+  &:after {
+    content: "";
+    font-weight: bold;
+    display: block;
+    width: 15px;
+    height: 14px;
+    background-color: #fff;
+    color: #fff;
+    visibility: visible;
+    border-radius: 50%;
+    border: 1px solid #999;
+    position: absolute;
+    left: 0;
+    z-index: 999;
+    transition:all .3s;
+  }
+  &:checked:after {
+    content : "✓";
+    text-align: center;
+    line-height: 15px;
+    background-color: #07E507;
+    color: #fff;
+    left: 15px;
+  }
 }

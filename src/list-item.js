@@ -7,13 +7,17 @@ class ListItem {
         let itemView = document.createElement("LI");
         let remover =  document.createElement("BUTTON");
         let doneCheck = document.createElement('input');
+        let innerSpan = document.createElement('span');
         doneCheck.type = "checkbox";
         remover.setAttribute("class", "remover");
         parent.appendChild(itemView);
-        itemView.innerHTML = this.liValue;
-        itemView.appendChild(remover);
+        itemView.appendChild(innerSpan);
+        innerSpan.innerHTML = this.liValue;
         itemView.appendChild(doneCheck);
+        itemView.appendChild(remover);
         remover.innerHTML = "🗙";
+        doneCheck.checked = this.isDone;
+
         const element = array[array.length - 1];
 
         const removeElement = function(event) {

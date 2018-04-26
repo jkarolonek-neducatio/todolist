@@ -1,7 +1,8 @@
 class ListItem {
-    constructor(liValue, isDone = false) {
-        this.liValue = liValue;
-        this.isDone = isDone;
+    constructor(title, completed = false, id) {
+        this.title = title;
+        this.completed = completed;
+        this.id = id;
     }
     create(parent, array) {
         let itemView = document.createElement("LI");
@@ -12,11 +13,11 @@ class ListItem {
         remover.setAttribute("class", "remover");
         parent.appendChild(itemView);
         itemView.appendChild(innerSpan);
-        innerSpan.innerHTML = this.liValue;
+        innerSpan.innerHTML = this.title;
         itemView.appendChild(doneCheck);
         itemView.appendChild(remover);
         remover.innerHTML = "🗙";
-        doneCheck.checked = this.isDone;
+        doneCheck.checked = this.completed;
 
         const element = array[array.length - 1];
 
@@ -26,10 +27,16 @@ class ListItem {
             remover.removeEventListener('click', removeElement);
             doneCheck.removeEventListener('change', checkChange);
             console.log(array);
+            fetch(`http://localhost:8080/api/todos/${element.id}`, {
+                method: 'delete',
+            })
+            .then(function(response) {
+                return response.json();
+            })
         }
 
         const checkChange = function(event) {
-            array[array.indexOf(element)].isDone = !array[array.indexOf(element)].isDone;
+            array[array.indexOf(element)].completed = !array[array.indexOf(element)].completed;
             console.log(array);
         }
 

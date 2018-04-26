@@ -24,7 +24,13 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist',
-    historyApiFallback: true
+    historyApiFallback: true,
+    proxy: {
+      '/api': {
+        target: 'http://18.197.125.224',
+        pathRewrite: {'^/api': ''}
+      }
+    }
   },
   module: {
     rules: [

@@ -26,7 +26,6 @@ class ListItem {
             array.splice(array.indexOf(element), 1);
             remover.removeEventListener('click', removeElement);
             doneCheck.removeEventListener('change', checkChange);
-            console.log(array);
             fetch(`http://localhost:8080/api/todos/${element.id}`, {
                 method: 'delete',
             })
@@ -37,7 +36,14 @@ class ListItem {
 
         const checkChange = function(event) {
             array[array.indexOf(element)].completed = !array[array.indexOf(element)].completed;
-            console.log(array);
+            fetch(`http://localhost:8080/api/todos/${element.id}`, {
+                method: 'put',
+                body: JSON.stringify(array[array.indexOf(element)])
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(res => array[array.indexOf(element)].completed = element.completed)
         }
 
         remover.addEventListener('click', removeElement);

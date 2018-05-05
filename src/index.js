@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const addButton = document.getElementById('add-item');
   const listContainer = document.getElementById('list-container');
   const list = document.createElement("UL");
+  let itemInput = document.getElementById('item-input');
   
   listContainer.appendChild(list);
   let listObjects = [];
@@ -16,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return response.json();
   })
   .then(function(data) {
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
       let listElement = new ListItem(data[i].title, data[i].completed, data[i].id);
       listObjects.push(listElement);
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   function addListItem() {
-    let itemValue = document.getElementById('item-input').value;
+    let itemValue = itemInput.value;
     let listElement = new ListItem(itemValue, false);
     listObjects.push(listElement);
 
@@ -35,13 +35,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
       body: JSON.stringify(listElement)
     })
     .then(function(response) {
-      console.log(response);
-      return response.json().then(res => console.log(res));
+      return response.json();
     })
+    .then(res => listElement.id = res.id)
+
+    itemInput.value = '';
   }
 
-  addButton.addEventListener('click', function(event) {
+  addButton.addEventListener('click', (event) => {
     addListItem();
-    console.log(listObjects);
+  });
+
+  itemInput.addEventListener('keyup', (key) => {
+    if (key.keyCode === 13) {
+      addListItem();
+    }
   });
 });

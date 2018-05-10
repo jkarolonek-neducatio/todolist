@@ -30,6 +30,7 @@ class ListItem {
             arr.splice(arr.indexOf(element), 1);
             remover.removeEventListener('click', removeElement);
             doneCheck.removeEventListener('change', checkChange);
+            listItemInput.removeEventListener('input', valChange);
             fetch(`/api/todos/${element.id}`, {
                 method: 'delete',
             })

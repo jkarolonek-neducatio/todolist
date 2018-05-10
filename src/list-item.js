@@ -4,29 +4,33 @@ class ListItem {
         this.completed = completed;
         this.id = id;
     }
-    create(parent, array) {
+    create(parent, arr) {
         let itemView = document.createElement("LI");
         let remover =  document.createElement("BUTTON");
         let doneCheck = document.createElement('input');
-        let innerSpan = document.createElement('span');
+        let listItemInput = document.createElement('input');
+        let editButton = document.createElement('button');
         doneCheck.type = "checkbox";
+        listItemInput.type = "text";
         remover.setAttribute("class", "remover");
+        listItemInput.setAttribute("class", "list-item-input");
         parent.appendChild(itemView);
-        itemView.appendChild(innerSpan);
-        innerSpan.innerHTML = this.title;
+        itemView.appendChild(listItemInput);
+        listItemInput.value = this.title;
         itemView.appendChild(doneCheck);
         itemView.appendChild(remover);
         remover.innerHTML = "🗙";
         doneCheck.checked = this.completed;
 
-        const element = array[array.length - 1];
+        const element = arr[arr.length - 1];
+
 
         const removeElement = function(event) {
             parent.removeChild(itemView);
-            array.splice(array.indexOf(element), 1);
+            arr.splice(arr.indexOf(element), 1);
             remover.removeEventListener('click', removeElement);
             doneCheck.removeEventListener('change', checkChange);
-            fetch(`http://localhost:8080/api/todos/${element.id}`, {
+            fetch(`/api/todos/${element.id}`, {
                 method: 'delete',
             })
             .then(function(response) {
@@ -35,20 +39,37 @@ class ListItem {
         }
 
         const checkChange = function(event) {
-            array[array.indexOf(element)].completed = !array[array.indexOf(element)].completed;
-            fetch(`http://localhost:8080/api/todos/${element.id}`, {
+            event.preventDefault()
+            arr[arr.indexOf(element)].completed = !arr[arr.indexOf(element)].completed;
+            fetch(`/api/todos/${element.id}`, {
                 method: 'put',
-                body: JSON.stringify(array[array.indexOf(element)])
+                body: JSON.stringify(arr[arr.indexOf(element)])
+            })
+            .then(function(response) {
+                return response.json();
+            }).catch(function() {
+                doneCheck.checked = !element.completed;
+                arr[arr.indexOf(element)].completed = !arr[arr.indexOf(element)].completed;
+            });
+        }
+
+        const valChange = function(event) {
+            element.title = listItemInput.value;
+            fetch(`/api/todos/${element.id}`, {
+                method: 'put',
+                body: JSON.stringify(arr[arr.indexOf(element)])
             })
             .then(function(response) {
                 return response.json();
             })
-            .then(res => array[array.indexOf(element)].completed = element.completed)
+            console.log(element);
         }
 
         remover.addEventListener('click', removeElement);
 
         doneCheck.addEventListener('change', checkChange);
+
+        listItemInput.addEventListener('input', valChange);
     }
 }
 

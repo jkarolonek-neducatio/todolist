@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   let listObjects = [];
 
 
-  fetch('http://localhost:8080/api/todos')
+  fetch('/api/todos')
   .then(function(response) {
     return response.json();
   })
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     listObjects.push(listElement);
 
     listElement.create(list, listObjects);
-    fetch('http://localhost:8080/api/todos', {
+    fetch('/api/todos', {
       method: 'post',
       body: JSON.stringify(listElement)
     })

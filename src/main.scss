@@ -109,3 +109,15 @@ input[type="checkbox"] {
     border: 1px solid #fff;
   }
 }
+.list-item-input {
+  background: #2069F8;
+  border: 2px solid transparent;
+  color: #fff;
+  padding: 3px;
+  &:hover {
+    cursor: pointer;
+  }
+  &:focus {
+    border: 2px solid #fff;
+  }
+}

@@ -25,18 +25,21 @@ class ListItem {
         const element = arr[arr.length - 1];
 
 
+        
         const removeElement = function(event) {
-            parent.removeChild(itemView);
-            arr.splice(arr.indexOf(element), 1);
-            remover.removeEventListener('click', removeElement);
-            doneCheck.removeEventListener('change', checkChange);
-            listItemInput.removeEventListener('input', valChange);
             fetch(`/api/todos/${element.id}`, {
                 method: 'delete',
             })
             .then(function(response) {
                 return response.json();
             })
+            .then(function(data) {
+                parent.removeChild(itemView);
+                arr.splice(arr.indexOf(element), 1);
+                remover.removeEventListener('click', removeElement);
+                doneCheck.removeEventListener('change', checkChange);
+                listItemInput.removeEventListener('input', valChange);
+            });
         }
 
         const checkChange = function(event) {
@@ -55,6 +58,7 @@ class ListItem {
         }
 
         const valChange = function(event) {
+            let initialVal = element.title;
             element.title = listItemInput.value;
             fetch(`/api/todos/${element.id}`, {
                 method: 'put',
@@ -63,6 +67,11 @@ class ListItem {
             .then(function(response) {
                 return response.json();
             })
+            .catch(function() {
+                element.title = initialVal;
+                listItemInput.value = initialVal;
+            });
+            
             console.log(element);
         }
 
@@ -70,7 +79,14 @@ class ListItem {
 
         doneCheck.addEventListener('change', checkChange);
 
-        listItemInput.addEventListener('input', valChange);
+        listItemInput.addEventListener('blur', valChange);
+
+        listItemInput.addEventListener('keyup', (key) => {
+            if (key.keyCode === 13) {
+              valChange;
+              listItemInput.blur();
+            }
+          });
     }
 }
 

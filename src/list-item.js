@@ -71,8 +71,6 @@ class ListItem {
                 element.title = initialVal;
                 listItemInput.value = initialVal;
             });
-            
-            console.log(element);
         }
 
         remover.addEventListener('click', removeElement);
